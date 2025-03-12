@@ -8,10 +8,11 @@
 
 <a href="{{ route('posts.create') }}"> Create a Post </a>
 
-@if (count($posts) > 0)
-    @each('posts._post', $posts, 'post')
-@else
+
+@forelse($posts as $post)
+    @include('posts._post', ['post' => $post])
+@empty
     <p>No Mooing to be seen here</p>
-@endif
+@endforelse
 
 </html>

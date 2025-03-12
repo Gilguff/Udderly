@@ -24,5 +24,6 @@
 
         <button type="submit">Create Post</button>
     </form>
+    <a href="{{ route('posts.index') }}">Cancel</a>
 </body>
 </html>

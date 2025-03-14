@@ -1,27 +1,34 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikingController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*Posts*/
 
-/*Route::get('/posts', [PostController::class, 'index'])->name('posts.index');*/
-/*Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');*/
-/*Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');*/
-/*Route::get('/posts/edit/{post}', [PostController::class, 'edit'])->name('posts.edit');*/
-/*Route::put('/posts/update/{post}', [PostController::class, 'update'])->name('posts.update');*/
-/*Route::delete('/posts/destroy/{post}', [PostController::class, 'destroy'])->name('posts.destroy');*/
-
+Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::resources(['posts' => PostController::class]);
 
 Route::prefix('posts/{post}')->group(function () {
-    Route::post('/', [CommentController::class, 'store'])->name('posts.comments.store')->middleware('auth');
-    Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('posts.comments.destroy');
+
+    /*Comments*/
+    Route::post('/comments', [CommentController::class, 'store'])->name('posts.comments.store')->middleware('auth');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('posts.comments.destroy');
+
+    /*Likes*/
+    Route::post('/likes', [LikingController::class, 'store'])->name('posts.like')->middleware('auth');
+    Route::delete('/likes', [LikingController::class, 'destroy'])->name('posts.unlike')->middleware('auth');
 });
+
+
+/*Users*/
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::post('/users/{user}/follow', [UserController::class, 'follow'])->name('users.follow');
+Route::delete('/users/{user}/unfollow', [UserController::class, 'unfollow'])->name('users.unfollow');
 
 Auth::routes();
 

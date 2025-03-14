@@ -2,8 +2,7 @@
 <html>
 
 <div class="comment">
-    <p>{{ $comment->author->name }}</p>
-    <p>{{ $comment->body }}</p>
+    <p><strong>{{ $comment->author->name }}:</strong>  {{ $comment->body }}</p>
 </div>
 <div>
     @if (Auth::user() == $comment->author)

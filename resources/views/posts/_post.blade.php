@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html>
+<div>
+    <p><strong>{{ $post->author->name }}:</strong> {{ $post->body }}</p>
 
-<div class="post-header">
-    <h2>{{ $post->author->name }}</h2>
-</div>
-
-<div class="post-body">
-    <p>{{ $post->body }}</p>
-</div>
+<p>Likes: {{ $post->likesCount() }}</p>
 
 @if (Auth::user() == $post->author)
     <a href="{{ route('posts.edit', $post) }}">Edit Post</a>
@@ -16,8 +12,10 @@
         @method('DELETE')
         <button type="submit">delete</button>
     </form>
+@else
+    @include('likes._like_button', ['post' => $post])
 @endif
-
+</div>
 
 <div>
     <h3>Comments</h3>

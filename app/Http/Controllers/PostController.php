@@ -47,7 +47,9 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        $validated = $request->validate(['body' => 'string|max:255']);
+        $validated = $request->validate([
+            'body' => 'string|max:255'
+        ]);
 
         $post->update($validated);
 

@@ -3,25 +3,85 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
 
+    /*Posts*/
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'author_id');
     }
 
+    /*Comments*/
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'author_id');
     }
+
+    /*Likes*/
+    public function likings()
+    {
+        return $this->hasMany(Liking::class);
+    }
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likings', 'user_id', 'post_id');
+    }
+
+    public function like(Post $post)
+    {
+        if (!$this->isLiked($post)) {
+            $this->likedPosts()->attach($post);
+        }
+    }
+
+    public function unlike(Post $post)
+    {
+        $this->likedPosts()->detach($post);
+    }
+
+    public function isLiked(Post $post)
+    {
+        return $this->likedPosts()->where('posts.id', $post->id)->exists();
+    }
+
+    /*Follows*/
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followings', 'followed_id', 'follower_id');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followings', 'followed_id', 'follower_id');
+    }
+
+    public function follow(User $user)
+    {
+        if (!$this->isFollowing($user)) {
+            $this->following()->attach($user);
+        }
+    }
+
+    public function unfollow(User $user)
+    {
+        $this->following()->detach($user);
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('users.id', $user->id)->exists();
+    }
+
+    public function isFollowedBy(User $user)
+    {
+        return $this->following()->where('users.id', $user->id)->exists();
+    }
+
 
     /**
      * The attributes that are mass assignable.

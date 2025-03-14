@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
     //
-
-    use HasFactory;
 
     public function author(): BelongsTo
     {
@@ -20,6 +17,21 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    public function likings()
+    {
+        return $this->hasMany(Liking::class);
+    }
+
+    public function likers()
+    {
+        return $this->belongsToMany(User::class, 'likings', 'post_id', 'user_id');
+    }
+
+    public function likesCount()
+    {
+        return $this->likers()->count();
     }
 
     protected $fillable = ['body'];

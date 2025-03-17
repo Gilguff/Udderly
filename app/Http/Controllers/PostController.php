@@ -10,11 +10,20 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('comments.author')->get();
+        $posts = Post::orderBy('created_at', 'desc')->get();
 
         return view('posts.index', ['posts' => $posts]);
     }
 
+    public function followingPosts()
+    {
+        $user = Auth::user();
+        $following = $user->following->pluck('id');
+
+        $posts = Post::whereIn('author_id', $following)->orWhere('author_id', $user->id)->orderBy('created_at', 'desc')->get();
+
+        return view('posts.following', ['posts' => $posts]);
+    }
 
     public function create()
     {
@@ -29,15 +38,12 @@ class PostController extends Controller
 
         $user = Auth::user();
 
-        if ($user) {
-            $post = new Post();
-            $post->body = $request->input('body');
-            $post->author_id = $user->id;
-            $post->save();
-            return to_route('posts.index');
-        } else {
-            return to_route('login');
-        }
+        $user->posts()->create([
+            'body' => $request->body,
+            'author_id' => $user->id,
+        ]);
+
+        return to_route('posts.index');
     }
 
     public function edit(Post $post)

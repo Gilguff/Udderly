@@ -17,12 +17,11 @@ class CommentController extends Controller
             'body' => 'required|string|max:255'
         ]);
 
-        $comment_data = [
+        $post->comments()->create([
             'body' => $request->body,
             'author_id' => Auth::id(),
             'post_id' => $post->id
-        ];
-        $post->comments()->create($comment_data);
+        ]);
 
         return to_route('posts.index', $post);
     }

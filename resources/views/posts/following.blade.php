@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Posts</title>
+    <title>Following</title>
     @include('layouts.app')
 </head>
 
-<h1>Posts</h1>
+<h1>Following</h1>
 
 <a href="{{ route('posts.create') }}"> Create a Post </a>
-
 
 @forelse($posts as $post)
     @include('posts._post', ['post' => $post])

@@ -2,7 +2,8 @@
 <html>
 
 <div class="comment">
-    <p><strong>{{ $comment->author->name }}:</strong>  {{ $comment->body }}</p>
+    <img src="{{ $comment->author->profile->profilePictureUrl()}}" alt="Profile Picture" style="width: 40px; height: 40px;">
+    <p><strong><a href="{{ route('profiles.show', $comment->author) }}">{{ $comment->author->name }}:</a></strong>  {{ $comment->body }}</p>
 </div>
 <div>
     @if (Auth::user() == $comment->author)

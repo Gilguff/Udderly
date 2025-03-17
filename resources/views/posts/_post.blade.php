@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 <div>
-    <p><strong>{{ $post->author->name }}:</strong> {{ $post->body }}</p>
+    <img src="{{ $post->author->profile->profilePictureUrl()}}" alt="Profile Picture" style="width: 40px; height: 40px;">
+    <p><strong><a href="{{ route('profiles.show', $post->author) }}">{{ $post->author->name }}:</a></strong> {{ $post->body }}</p>
+</div>
 
+<div>
 <p>Likes: {{ $post->likesCount() }}</p>
 
 @if (Auth::user() == $post->author)

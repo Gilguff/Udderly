@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Create Post</title>
+    @include('layouts.app')
 </head>
 <body>
     <h1>Create a New Post</h1>

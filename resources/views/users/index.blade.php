@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Users</title>
+    @include('layouts.app')
 </head>
 
 <h1>Users</h1>

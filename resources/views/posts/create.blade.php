@@ -1,14 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Post</title>
+    <title>Create a New Moo</title>
     @include('layouts.app')
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button, .cancel-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cancel-button {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Create a New Post</h1>
+    <h1>Create a New Moo</h1>
 
     @if ($errors->any())
-        <div style="color: red;">
+        <div class="error-message">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -20,11 +69,13 @@
     <form action="{{ route('posts.store') }}" method="POST">
         @csrf
 
-        <label for="body">Post Body:</label><br>
-        <textarea id="body" name="body" rows="4" cols="50">{{ old('body') }}</textarea><br><br>
+        <div class="form-group">
+            <label for="body">Your Moo:</label>
+            <textarea id="body" name="body" rows="4">{{ old('body') }}</textarea>
+        </div>
 
-        <button type="submit">Create Post</button>
+        <button type="submit">Publish Moo</button>
+        <a href="{{ route('posts.index') }}" class="cancel-button">Cancel</a>
     </form>
-    <a href="{{ route('posts.index') }}">Cancel</a>
 </body>
 </html>
